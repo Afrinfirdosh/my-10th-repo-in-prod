@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b1c0b670-39f6-4698-8853-93bdc76be997" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="processorlevelerrorhandling1Flow" doc:id="5e793a02-1b22-4453-bac7-c3a8a55f84b8" >
+		<http:listener doc:name="Listener" doc:id="1f65fc0d-2cf8-4658-89bc-5db737d0d26b" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="edfc8978-e052-49f9-9ec3-20cf06636edd" message="start flow"/>
+		<try doc:name="Try" doc:id="ae8684ad-bcc8-4df6-b12b-4f4e1d6c4260" >
+			<logger level="INFO" doc:name="Logger" doc:id="f5730058-54dc-48be-9714-d841c6e3e098" />
+			<validation:is-null doc:id="e012536f-1822-4954-a9e4-66109d3c7672" value="#[payload]" />
+			<set-payload value="i am azirul bhai" doc:name="Set Payload" doc:id="867f2d56-e9e8-49be-affe-2cd53c5673b2" />
+			<logger level="INFO" doc:name="Logger" doc:id="96f832a7-8f44-4d7d-be9c-4410ea924bb7" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6398a3b5-3d65-45de-87a3-2e178d87a86f" >
+					<logger level="INFO" doc:name="Logger" doc:id="d81a1aa1-8a1f-49ce-b81c-7a69a7ea238d" />
+					<set-payload value="i am khan" doc:name="Set Payload" doc:id="ddaa8a98-70ed-4984-b045-22248461f743" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<logger level="INFO" doc:name="Logger" doc:id="70473dd9-3484-4afc-a506-2bdf707affb0" message="end flow"/>
+	</flow>
+</mule>
